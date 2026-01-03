@@ -1,8 +1,8 @@
 // Configuration for the dashboard
 const CONFIG = {
     // API endpoint - update this with your server IP/URL
-    API_URL: 'http://localhost:5000',
-    WS_URL: 'http://localhost:5000',
+    API_URL: 'https://irrigation-controller.onrender.com/',
+    WS_URL: 'https://irrigation-controller.onrender.com/',
     
     // Update intervals (milliseconds)
     DATA_UPDATE_INTERVAL: 5000,
@@ -24,4 +24,5 @@ const CONFIG = {
     HUMIDITY_LOW: 40,
     HUMIDITY_HIGH: 80
 };
+
 
