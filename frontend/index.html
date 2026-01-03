@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Irrigation Controller Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌱 Intelligent Irrigation Controller</h1>
+            <div class="status-indicator" id="statusIndicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Connecting...</span>
+            </div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">System Status</div>
+                <div class="stat-value" id="systemStatus">Online</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Water Used (24h)</div>
+                <div class="stat-value" id="totalWater">0 ml</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Active Zones</div>
+                <div class="stat-value" id="activeZones">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pump Status</div>
+                <div class="stat-value" id="pumpStatus">Idle</div>
+            </div>
+        </div>
+
+        <div class="zones-container" id="zonesContainer">
+            <!-- Zones will be dynamically generated -->
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-card">
+                <h2>Soil Moisture Trends (24h)</h2>
+                <canvas id="moistureChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h2>Temperature & Humidity (24h)</h2>
+                <canvas id="tempHumidityChart"></canvas>
+            </div>
+        </div>
+
+        <div class="alerts-container" id="alertsContainer">
+            <h2>System Alerts</h2>
+            <div id="alertsList"></div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/charts.js"></script>
+</body>
+</html>
+

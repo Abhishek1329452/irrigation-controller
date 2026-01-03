@@ -1,0 +1,28 @@
+/*
+ * TensorFlow Lite Model Header File
+ * 
+ * This is a placeholder file. To generate the actual model header:
+ * 
+ * 1. Train the model: python models/train_model.py
+ * 2. Convert to TFLite: python models/convert_to_tflite.py
+ * 3. Convert to header: python models/convert_model_to_header.py
+ * 
+ * Or manually using xxd:
+ * xxd -i firmware/models/irrigation_model.tflite firmware/main/irrigation_model.h
+ */
+
+#ifndef IRRIGATION_MODEL_H
+#define IRRIGATION_MODEL_H
+
+#include "tensorflow/lite/micro/micro_interpreter.h"
+
+// Placeholder model data - replace with actual converted model
+const unsigned char irrigation_model_tflite[] = {
+  0x1c, 0x00, 0x00, 0x00, 0x54, 0x46, 0x4c, 0x33, 0x14, 0x00, 0x20, 0x00,
+  // ... (actual model bytes would go here)
+};
+
+const unsigned int irrigation_model_tflite_len = 1024;
+
+#endif
+
