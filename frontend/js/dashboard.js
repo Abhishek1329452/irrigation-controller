@@ -13,6 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Initialize WebSocket connection
 function initializeWebSocket() {
+    if (!CONFIG.WS_URL) {
+        updateStatus('online', 'Live polling');
+        return;
+    }
+
+    if (typeof io === 'undefined') {
+        console.error('Socket.IO client failed to load');
+        updateStatus('offline', 'Realtime unavailable');
+        return;
+    }
+
     socket = io(CONFIG.WS_URL);
     
     socket.on('connect', () => {
@@ -220,11 +231,9 @@ function updateAlertsDisplay() {
 async function loadHistoricalData() {
     try {
         const response = await fetch(`${CONFIG.API_URL}/api/sensor-data?hours=24`);
-        if (response.ok) {
-            const data = await response.json();
-            // Re-initialize charts with historical data
-            initializeCharts(data);
-        }
+        const data = await readJsonResponse(response);
+        // Re-initialize charts with historical data
+        initializeCharts(data);
     } catch (error) {
         console.error('Error loading historical data:', error);
         // Charts are already initialized, they'll just show empty
@@ -234,16 +243,42 @@ async function loadHistoricalData() {
 // Start periodic data updates
 function startPeriodicUpdates() {
     // Update stats periodically
-    setInterval(async () => {
+    const updateData = async () => {
+        try {
+            const response = await fetch(`${CONFIG.API_URL}/api/current`);
+            const data = await readJsonResponse(response);
+            handleSensorUpdate(data);
+        } catch (error) {
+            console.error('Error fetching current data:', error);
+        }
+    };
+
+    const updateStats = async () => {
         try {
             const response = await fetch(`${CONFIG.API_URL}/api/stats?hours=24`);
-            const stats = await response.json();
+            const stats = await readJsonResponse(response);
             document.getElementById('totalWater').textContent = 
                 `${stats.total_water_applied.toFixed(0)} ml`;
         } catch (error) {
             console.error('Error fetching stats:', error);
         }
-    }, CONFIG.DATA_UPDATE_INTERVAL);
+    };
+
+    updateData();
+    updateStats();
+    setInterval(updateData, CONFIG.DATA_UPDATE_INTERVAL);
+    setInterval(updateStats, CONFIG.DATA_UPDATE_INTERVAL);
+}
+
+async function readJsonResponse(response) {
+    const contentType = response.headers.get('content-type') || '';
+    if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+    }
+    if (!contentType.includes('application/json')) {
+        throw new Error('Expected JSON response');
+    }
+    return response.json();
 }
 
 // Update zone configuration

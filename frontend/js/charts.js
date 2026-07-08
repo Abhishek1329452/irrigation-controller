@@ -1,10 +1,24 @@
 // Chart initialization and management
 let moistureChart = null;
 let tempHumidityChart = null;
-let chartData = {};
+let chartData = createEmptyChartData();
+
+function createEmptyChartData() {
+    return {
+        labels: [],
+        moisture: { 0: [], 1: [], 2: [], 3: [] },
+        temperature: { 0: [], 1: [], 2: [], 3: [] },
+        humidity: { 0: [], 1: [], 2: [], 3: [] }
+    };
+}
 
 // Initialize charts
 function initializeCharts(historicalData) {
+    if (typeof Chart === 'undefined') {
+        console.error('Chart.js failed to load');
+        return;
+    }
+
     // Process historical data if available
     if (historicalData && Object.keys(historicalData).length > 0) {
         processHistoricalData(historicalData);
@@ -28,12 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Process historical data for charts
 function processHistoricalData(data) {
-    chartData = {
-        labels: [],
-        moisture: { 0: [], 1: [], 2: [], 3: [] },
-        temperature: { 0: [], 1: [], 2: [], 3: [] },
-        humidity: { 0: [], 1: [], 2: [], 3: [] }
-    };
+    chartData = createEmptyChartData();
     
     if (!data || Object.keys(data).length === 0) {
         return; // No data to process
