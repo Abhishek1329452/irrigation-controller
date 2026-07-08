@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Initialize WebSocket connection
 function initializeWebSocket() {
+    if (typeof io === 'undefined') {
+        console.error('Socket.IO client failed to load');
+        updateStatus('offline', 'Realtime unavailable');
+        return;
+    }
+
     socket = io(CONFIG.WS_URL);
     
     socket.on('connect', () => {
